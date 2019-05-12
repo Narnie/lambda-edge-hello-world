@@ -1,0 +1,25 @@
+{
+  "name": "lambda-edge",
+  "version": "1.0.0",
+  "description": "Lambda@edge testing for static website hosting ",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
+  "keywords": [
+    "static",
+    "website"
+  ],
+  "author": "sarah bernard",
+  "license": "ISC",
+  "devDependencies": {
+      "jest": "^22.4.4",
+      "babel-cli": "^6.26.0",
+      "babel-core": "^6.26.3",
+      "babel-preset-env": "^1.7.0"
+    }
+}

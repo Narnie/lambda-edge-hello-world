@@ -1,0 +1,70 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Sample SAM configuration for Lambda@Edge to facilitate deployments and
+  further updates
+Outputs:
+  CFDistribution:
+    Description: Cloudfront Distribution Domain Name
+    Value:
+      Fn::GetAtt:
+      - CFDistribution
+      - DomainName
+  LambdaEdgeFunctionSampleVersion:
+    Description: Lambda@Edge Sample Function ARN with Version
+    Value:
+      Ref: LambdaEdgeFunctionSample.Version
+Resources:
+  CFDistribution:
+    Properties:
+      DistributionConfig:
+        Comment: CI/CD for Lambda@Edge
+        DefaultCacheBehavior:
+          ForwardedValues:
+            Cookies:
+              Forward: none
+            Headers:
+            - Origin
+            QueryString: 'false'
+          LambdaFunctionAssociations:
+          - EventType: origin-request
+            LambdaFunctionARN:
+              Ref: LambdaEdgeFunctionSample.Version
+          TargetOriginId: MyOrigin
+          ViewerProtocolPolicy: allow-all
+        Enabled: 'true'
+        Origins:
+        - CustomOriginConfig:
+            HTTPPort: 80
+            OriginProtocolPolicy: match-viewer
+          DomainName: aws.amazon.com
+          Id: MyOrigin
+    Type: AWS::CloudFront::Distribution
+  LambdaEdgeFunctionRole:
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action:
+          - sts:AssumeRole
+          Effect: Allow
+          Principal:
+            Service:
+            - lambda.amazonaws.com
+            - edgelambda.amazonaws.com
+          Sid: AllowLambdaServiceToAssumeRole
+        Version: '2012-10-17'
+      ManagedPolicyArns:
+      - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Path: /
+    Type: AWS::IAM::Role
+  LambdaEdgeFunctionSample:
+    Properties:
+      AutoPublishAlias: live
+      CodeUri: s3://webinator-lambda-bucket-1234/974947f5bb7998f63c6ba2a2dc045676
+      Handler: index.handler
+      Role:
+        Fn::GetAtt:
+        - LambdaEdgeFunctionRole
+        - Arn
+      Runtime: nodejs6.10
+      Timeout: 5
+    Type: AWS::Serverless::Function
+Transform: AWS::Serverless-2016-10-31
