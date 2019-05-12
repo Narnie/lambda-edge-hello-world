@@ -1,4 +1,10 @@
-# hello world Lambda@Edge
+# Hello World Lambda@Edge Example
+
+You will need the AWS CLI and AWS SAM installed to run this demo. 
+
+https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-install.html
+
+https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html
 
 ## Set Environment variables 
 
