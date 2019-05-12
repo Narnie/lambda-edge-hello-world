@@ -2,15 +2,15 @@
 set -euo pipefail
 
 echo "+++ Packaging Lambda@edge"
-aws --profile YOUR-AWS-PROFILE-NAME-HERE cloudformation package \
+aws --profile ${AWS_USER_NAME}  cloudformation package \
     --template-file template.yml \
     --output-template-file packaged.yaml \
-    --s3-bucket lambda-storage-bucket-1234 \
+    --s3-bucket ${LAMBDA_STORAGE_BUCKET} \
     --region us-east-1 
 
 echo "+++ Deploying Lambda@Edge"
 aws \
-    --profile YOUR-AWS-PROFILE-NAME-HERE \
+    --profile ${AWS_USER_NAME} \
     cloudformation deploy \
     --template-file packaged.yaml \
     --stack-name lambda-edge \

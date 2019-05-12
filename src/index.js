@@ -25,7 +25,7 @@ exports.handler = (event, context, callback) => {
     // print out some stuff from the event object
     console.log("*** Origin Request Received from the Edge ***");
     let request = event.Records[0].cf.request;
-    console.log(`Request URI: ${request.method}`)
+    console.log(`Request Method: ${request.method}`)
 
     callback(null, response) // you always need to call the callback! 
 }
